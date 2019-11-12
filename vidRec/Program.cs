@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
@@ -73,10 +73,12 @@ namespace vidRec
                     {
                         if (_firstFrameTime != null)
                         {
+                            System.Console.SetOut(new System.IO.StreamWriter(System.IO.Stream.Null));
                             _writer.WriteVideoFrame(bitmap, DateTime.Now - _firstFrameTime.Value);
                         }
                         else
                         {
+                            System.Console.SetOut(new System.IO.StreamWriter(System.IO.Stream.Null));
                             _writer.WriteVideoFrame(bitmap);
                             _firstFrameTime = DateTime.Now;
                         }
@@ -91,7 +93,6 @@ namespace vidRec
             }
             catch (Exception exc)
             {
-                Console.WriteLine(exc);
             }
         }
 
@@ -132,7 +133,7 @@ namespace vidRec
             try
             {
                 _writer = new VideoFileWriter();
-                _writer.Open(FileName, 720, 480);
+                _writer.Open(FileName, 480, 320, 30, VideoCodec.MPEG4);
             }
             catch (Exception e)
             {
@@ -144,16 +145,20 @@ namespace vidRec
         static void Main(string[] args)
         {
             Program p = new Program();
-            string command = Console.ReadLine();
-            if (command == "start")
+            while (true)
             {
-                p.StartCamera();
-                p.StartRecording();
-            }
-            else if (command == "stop")
-            {
-                p.StopCamera();
-                p.StopRecording();
+                string command = Console.ReadLine();
+                if (command == "start")
+                {
+                    p.StartCamera();
+                    p.StartRecording();
+                }
+                if (command == "stop")
+                {
+                    p.StopCamera();
+                    p.StopRecording();
+                    break;
+                }
             }
         }
 
