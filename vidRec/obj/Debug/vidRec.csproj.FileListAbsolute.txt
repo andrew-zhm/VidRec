@@ -62,3 +62,9 @@ C:\Users\CISL\Documents\GitHub\VidRec\vidRec\obj\Debug\vidRec.csprojAssemblyRefe
 C:\Users\CISL\Documents\GitHub\VidRec\vidRec\obj\Debug\vidRec.csproj.CopyComplete
 C:\Users\CISL\Documents\GitHub\VidRec\vidRec\obj\Debug\vidRec.exe
 C:\Users\CISL\Documents\GitHub\VidRec\vidRec\obj\Debug\vidRec.pdb
+C:\Users\CISL\Documents\GitHub\VidRec\vidRec\bin\Debug\Newtonsoft.Json.dll
+C:\Users\CISL\Documents\GitHub\VidRec\vidRec\bin\Debug\Newtonsoft.Json.xml
+C:\Users\CISL\Documents\GitHub\VidRec\vidRec\bin\Debug\Microsoft.Diagnostics.Tracing.EventSource.dll
+C:\Users\CISL\Documents\GitHub\VidRec\vidRec\bin\Debug\RabbitMQ.Client.dll
+C:\Users\CISL\Documents\GitHub\VidRec\vidRec\bin\Debug\Microsoft.Diagnostics.Tracing.EventSource.xml
+C:\Users\CISL\Documents\GitHub\VidRec\vidRec\bin\Debug\RabbitMQ.Client.xml

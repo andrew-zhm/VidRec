@@ -7,7 +7,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Newtonsoft.Json.Linq;
 
-namespace SpatialContext
+namespace vidRec
 {
     class CommHandler
     {

@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
+using Newtonsoft.Json.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -11,6 +13,7 @@ using Accord.Video.FFMPEG;
 using AForge.Video;
 using AForge.Video.DirectShow;
 using Microsoft.Win32;
+
 
 namespace vidRec
 {
@@ -26,6 +29,8 @@ namespace vidRec
         private DateTime? _firstFrameTime;
         private string FileName = "C:\\Users\\CISL\\Desktop\\1.avi";
 
+        private static CommHandler receive;
+
         public Program()
         {
             VideoDevices = new ObservableCollection<FilterInfo>();
@@ -33,6 +38,7 @@ namespace vidRec
         }
 
         public ObservableCollection<FilterInfo> VideoDevices { get; set; }
+
 
         private void GetVideoDevices()
         {
@@ -142,27 +148,16 @@ namespace vidRec
             _recording = true;
         }
 
+        public static void commandCallback(string msg)
+        {
+            Console.WriteLine(msg);
+        }
+
         static void Main(string[] args)
         {
             Program p = new Program();
-            while (true)
-            {
-                string command = Console.ReadLine();
-                if (command == "start")
-                {
-                    p.StartCamera();
-                    p.StartRecording();
-                }
-                if (command == "stop")
-                {
-                    p.StopCamera();
-                    p.StopRecording();
-                    break;
-                }
-            }
-            DirectShowSource("1.avi", audio = false)
-            nbFrames = Framecount();
-            Console.WriteLine()
+            receive = new CommHandler("129.161.106.25");
+            receive.listen("amq.topic", "commandMaster", commandCallback);
         }
 
     }
