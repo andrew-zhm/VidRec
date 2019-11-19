@@ -1,6 +1,8 @@
 import pika
+import msvcrt
 import time
 import json
+import commHandler
 
 #start python send.py
 #press either 1 or 2
@@ -32,17 +34,21 @@ if __name__ == '__main__':
   print ('press Q or ctrl+c to quit')
   #rate.sleep()
 
+channel = commHandler.commHandler("129.161.106.25")
+channel.send("amq.topic","commandMaster",json.dumps(message)) 
 
-connection = pika.BlockingConnection(
-<<<<<<< HEAD
-    pika.ConnectionParameters(host='129.161.106.25',port=1111))
-=======
-    pika.ConnectionParameters(host='localhost',port=1234))
->>>>>>> cc51da32f0ab95e8d7b7b73d6346e5da139a7c48
-channel = connection.channel()
+# credentials = pika.PlainCredentials('guest','guest')
+# connection = pika.BlockingConnection(
+#     pika.ConnectionParameters(host='129.161.106.25',port=5672,virtual_host='/',credentials=credentials))
+# channel = connection.channel()
 
-channel.queue_declare(queue='masterCommand')
-send_message = json.dumps(message)
-channel.basic_publish(exchange='', routing_key='masterCommand', body=send_message)
-print(" [x] Sent "+send_message)
-connection.close()
+
+# queue ='masterCommand'
+# exchange='master.fanout'
+
+# channel.exchange_declare(exchange= exchange, exchange_type='fanout', durable=True)
+# channel.queue_declare(queue=queue)
+# send_message = json.dumps(message)
+# channel.basic_publish(exchange=exchange, routing_key=queue, body=send_message)
+# print(" [x] Sent "+send_message)
+# connection.close()
