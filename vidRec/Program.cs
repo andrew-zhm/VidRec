@@ -151,14 +151,34 @@ namespace vidRec
         public static void commandCallback(string msg)
         {
             Console.WriteLine(msg);
+            var rec = JObject.Parse(msg);
+            if (rec.Value<string>("command").CompareTo("start") == 0)
+            {
+                if (CurrentDevice != null)
+                {
+                    _videoSource = new VideoCaptureDevice(CurrentDevice.MonikerString);
+                    _videoSource.NewFrame += video_NewFrame;
+                    _videoSource.Start();
+                }
+                else
+                {
+                    Console.WriteLine("Current device can't be null");
+                }
+                p.StartRecording();
+            }
+            if (rec.Value<string>("command").CompareTo("end") == 0)
+            {
+                p.StopCamera();
+                p.StopRecording();
+            }
         }
 
         static void Main(string[] args)
         {
             Program p = new Program();
             receive = new CommHandler("129.161.106.25");
-            receive.listen("amq.topic", "commandMaster", commandCallback);
+            Action<string> commandCallbackAction = new Action<string>(commandCallback);
+            receive.listen("amq.topic", "commandMaster", commandCallbackAction);
         }
-
     }
 }
