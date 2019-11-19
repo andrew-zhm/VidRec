@@ -1,28 +1,22 @@
 import pika
 
-
-queue ='masterCommand'
-exchange='master.fanout'
-
-#connect to the specific channel. 
 connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host='127.0.0.1',port=5672))
+<<<<<<< HEAD
+    pika.ConnectionParameters(host='129.161.106.25',port=1111))
+=======
+    pika.ConnectionParameters(host = 'localhost', port = 1234))
+>>>>>>> cc51da32f0ab95e8d7b7b73d6346e5da139a7c48
 channel = connection.channel()
 
-#declare the queue, and get the queue answer 
-#decalre the exchange
-#bind the exchange to the queue (so that it can send all the messages to all the listeners)
-result = channel.queue_declare('',exclusive=True)
-queue = result.method.queue
-channel.exchange_declare(exchange= exchange, exchange_type='fanout', durable=True)
-channel.queue_bind(exchange=exchange,queue=queue)
+channel.queue_declare(queue='masterCommand')
+
 
 def callback(ch, method, properties, body):
     print(" [x] Received %r" % body)
 
-#start to listern 
-#TODO: Change the function #callback# to your own.
+
 channel.basic_consume(
-    callback, queue=queue, no_ack=True)
+    queue='masterCommand', on_message_callback=callback, auto_ack=True)
+
 print(' [*] Waiting for messages. To exit press CTRL+C')
 channel.start_consuming()

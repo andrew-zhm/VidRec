@@ -24,7 +24,7 @@ namespace vidRec
         private VideoFileWriter _writer;
         private bool _recording;
         private DateTime? _firstFrameTime;
-        private string FileName = "C:\\Users\\Andrew_ZHM\\Desktop\\1.avi";
+        private string FileName = "C:\\Users\\CISL\\Desktop\\1.avi";
 
         public Program()
         {
@@ -133,7 +133,7 @@ namespace vidRec
             try
             {
                 _writer = new VideoFileWriter();
-                _writer.Open(FileName, 480, 320, 30, VideoCodec.MPEG4);
+                _writer.Open(FileName, 480, 320, 40, VideoCodec.MPEG4);
             }
             catch (Exception e)
             {
@@ -160,6 +160,9 @@ namespace vidRec
                     break;
                 }
             }
+            DirectShowSource("1.avi", audio = false)
+            nbFrames = Framecount();
+            Console.WriteLine()
         }
 
     }
