@@ -97,9 +97,7 @@ namespace vidRec
                     Dispatcher.CurrentDispatcher.Invoke(() => Image = bi);
                 }
             }
-            catch (Exception exc)
-            {
-            }
+            catch (Exception exc){ }
         }
 
         private void StartCamera()
@@ -114,23 +112,6 @@ namespace vidRec
             {
                 Console.WriteLine("Current device can't be null");
             }
-        }
-
-        private void StopCamera()
-        {
-            if (_videoSource != null && _videoSource.IsRunning)
-            {
-                _videoSource.SignalToStop();
-                _videoSource.NewFrame -= video_NewFrame;
-            }
-            Image = null;
-        }
-
-        private void StopRecording()
-        {
-            _recording = false;
-            _writer.Close();
-            _writer.Dispose();
         }
 
         private void StartRecording()
@@ -148,37 +129,40 @@ namespace vidRec
             _recording = true;
         }
 
-        public static void commandCallback(string msg)
+        private void commandCallback(string msg)
         {
-            Console.WriteLine(msg);
             var rec = JObject.Parse(msg);
             if (rec.Value<string>("command").CompareTo("start") == 0)
             {
-                if (CurrentDevice != null)
-                {
-                    _videoSource = new VideoCaptureDevice(CurrentDevice.MonikerString);
-                    _videoSource.NewFrame += video_NewFrame;
-                    _videoSource.Start();
-                }
-                else
-                {
-                    Console.WriteLine("Current device can't be null");
-                }
-                p.StartRecording();
+                StartCamera();
+                StartRecording();
             }
             if (rec.Value<string>("command").CompareTo("end") == 0)
             {
-                p.StopCamera();
-                p.StopRecording();
+                Console.WriteLine("Recording stopped");
+                _recording = false;
+                _writer.Close();
+                _writer.Dispose();
+                if (_videoSource != null && _videoSource.IsRunning)
+                {
+                    _videoSource.SignalToStop();
+                    _videoSource.NewFrame -= video_NewFrame;
+                }
+                Image = null;
             }
         }
 
-        static void Main(string[] args)
+        public void commandHelper()
         {
-            Program p = new Program();
             receive = new CommHandler("129.161.106.25");
             Action<string> commandCallbackAction = new Action<string>(commandCallback);
             receive.listen("amq.topic", "commandMaster", commandCallbackAction);
+        }
+
+        static void Main()
+        {
+            Program p = new Program();
+            p.commandHelper();
         }
     }
 }
